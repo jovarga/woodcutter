@@ -1,0 +1,48 @@
+# _exact_protected.txt — files the EXACT-track workflow depends on.
+#
+# RULE: these files must NOT be changed. The exact track is the disqualification-critical
+# track (a suboptimal answer claimed optimal = DQ) and its results are validated. Every file
+# below is compiled into and actively used by the exact-track binary's runtime pipeline
+# (main.cpp -> harness_exact.hpp -> solve.hpp and its transitive dependencies, under the
+# default CMake config: MAF_TRACK=exact, i.e. WITHOUT MAF_HEURISTIC/MAF_LOWERBOUND/
+# MAF_2TREE_CENTROID). A silent change here can break optimality.
+#
+# Paths are relative to src/. One file per line; '#' lines are comments.
+#
+# NOT protected (heuristic/lower-bound-only; free to edit): heuristics.hpp, heur_params.hpp,
+# harness_heuristic.hpp, harness_lowerbound.hpp, _lineartime_day.hpp,
+# _lineartime_reductions_clusters.hpp, and mast/_centroid.hpp. The centroid engine is
+# #included by mast.hpp but its use is gated behind MAF_2TREE_CENTROID (unset for exact), so
+# it is compiled-in but runtime-inactive for the exact track — keep the exact build compiling
+# if you touch it, but it does not affect exact results.
+
+# --- entry / harness / exact driver ---
+main.cpp
+harness_exact.hpp
+solve.hpp
+
+# --- core data structures + I/O + budget ---
+core.hpp
+instance.hpp
+io.hpp
+budget.hpp
+maf_util.hpp
+
+# --- master LP / column generation / cut generation ---
+mpmodel.hpp
+columngeneration.hpp
+cut_generation.hpp
+cuts/set_packing_cuts.hpp
+
+# --- exact reductions + cluster decomposition ---
+preprocessing.hpp
+reduction_rule_stack.hpp
+
+# --- MAST pricing engines used by exact (quad_dp = 2-tree, multi_dp = t>=3) ---
+mast.hpp
+mast/pricing.hpp
+mast/trees.hpp
+mast/lca.hpp
+mast/ranked.hpp
+mast/multi_dp.hpp
+mast/quad_dp.hpp
