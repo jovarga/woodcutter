@@ -37,7 +37,7 @@ inline Sol run_reduced_once(const MAFP& maf, uint64_t seed, int defer_mode,
                             const std::function<void(const Sol&)>& progress = {}) {
   static const int CLUSTER_EXACT_MAX = [](){
     const char* e = std::getenv("MAF_CLUSTER_EXACT_MAX");
-    return (e && *e) ? std::atoi(e) : -1;   // -1 preserves the historical run_heuristic leaf policy
+    return (e && *e) ? std::atoi(e) : 0;   // -1 preserves the historical run_heuristic leaf policy
   }();
   // Per-block leaf: single-pass heuristic returning (partition, dual = #components) so the
   // solve_clusters primal/dual guards (dual <= primal) always hold.  The leaf forwards every block-level

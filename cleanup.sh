@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # Clean all build artifacts, then (unless --ignore-highs-verification) verify that the vendored
 # HiGHS 1.15.0 source matches the official upstream release.
 #
