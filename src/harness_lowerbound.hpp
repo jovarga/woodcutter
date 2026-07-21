@@ -265,7 +265,9 @@ inline int run_lowerbound_track() {
   auto certified  = [&](){ return best_sz != SIZE_MAX && within(best_sz, best_L); };
   auto publish_if = [&](){ if (certified()) { lb_harness::publish(render(best_forest));
                                               if (!done) { done = true; set_time_limit_seconds(0.0); } } };
-  auto consider   = [&](const std::vector<BitSet>& F){ if (done) return; if (F.size() < best_sz) { best_sz = F.size(); best_forest = F; publish_if(); } };
+  auto consider   = [&](const std::vector<BitSet>& F){ if (done) return; if (F.size() >= best_sz) return;
+                        if (!heur::cheap_valid(maf, F)) return;
+                        best_sz = F.size(); best_forest = F; publish_if(); };
   auto bump_L     = [&](double L){ if (done) return; if (L > best_L) best_L = L; publish_if(); };
 
   auto phase_decomp = [&](const ClusterSolver& leaf, double phase_seconds) {
